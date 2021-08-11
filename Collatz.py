@@ -66,14 +66,17 @@ def in_true_set(n):
     return isin(n, set_of_true)
     
 def colSeq(n, x=3, c=1):
-    '''generates a list of the numbers in the Collatz sequence starting at n'''
-    sequence = []
+    '''generates a list input/output pairs for each iteration of the collatz function, from n to 1. 
+    The input/output pairs (n1,n2) may be used to define a directed edge (n1 --> n2) of a graph.'''
+    edges = []
+    n1 = int(n) # TODO add exception handling for non-numeric type, or force input n to be integer
     while n != 1 and (in_true_set(n) == False):
-        sequence.append(int(n))
-        set_of_true.append(int(n))
-        n = col(n, x, c) #finds the next value of n in the collatz sequence
-    sequence.append(int(n))
-    return sequence
+        n2 = col(n1, x, c) #finds the next value of n in the collatz sequence
+        edges.append((n1, n2)) 
+        set_of_true.append(n1) # a simple list of the solution values
+        n1 = n2
+    set_of_true.append(int(n1))
+    return edges
 
 def my_iterator(start, finish, step =1):
     #a generator function that mimics the builtin generator range()
